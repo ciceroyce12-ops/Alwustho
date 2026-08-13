@@ -6,9 +6,9 @@
     <title>Al Wustho Technologies</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
-        body { height: 100vh; overflow: hidden; display: flex; align-items: center; justify-content: center; color: white; background-color: #001f3f; }
+        body { height: 100vh; width: 100vw; overflow: hidden; display: flex; align-items: center; justify-content: center; color: white; background-color: #001f3f; }
 
-        /* Video Background Wrapper */
+        /* Video Background Wrapper - Responsive for Mobile & Desktop */
         .video-background {
             position: fixed;
             top: 0;
@@ -17,42 +17,50 @@
             height: 100%;
             z-index: -1;
             overflow: hidden;
+            background-color: #001f3f;
         }
 
         .video-background iframe {
-            width: 100vw;
-            height: 56.25vw;
-            min-height: 100vh;
-            min-width: 177.77vh;
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
             pointer-events: none;
+            /* Ensures proper scaling on portrait mobile screens */
+            width: 177.78vh; 
+            height: 100vh;
+        }
+
+        @media (min-aspect-ratio: 16/9) {
+            .video-background iframe {
+                width: 100vw;
+                height: 56.25vw;
+            }
         }
 
         /* Overlay Content Box */
         .content {
-            background: rgba(0, 31, 63, 0.88); /* Deep Blue with opacity */
-            padding: 2.5rem;
+            background: rgba(0, 31, 63, 0.9); /* Deep Blue with opacity */
+            padding: 2.2rem 1.5rem;
             border-radius: 20px;
             text-align: center;
             border: 2px solid #FFA500; /* Orange Border */
-            max-width: 90%;
-            width: 400px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            width: 90%;
+            max-width: 420px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+            z-index: 1;
         }
 
         /* Profile Picture Placeholder Styling */
         .profile-container {
-            width: 110px;
-            height: 110px;
-            margin: 0 auto 1.2rem auto;
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 1rem auto;
             border-radius: 50%;
             overflow: hidden;
-            border: 3px solid #25D366; /* Green accent border for the profile */
+            border: 3px solid #25D366; /* Green accent border */
             box-shadow: 0 4px 15px rgba(0,0,0,0.4);
-            background-color: #ffffff; /* White background fallback */
+            background-color: #ffffff;
         }
 
         .profile-container img {
@@ -61,21 +69,22 @@
             object-fit: cover;
         }
 
-        h1 { color: #FFFFFF; margin-bottom: 0.5rem; font-size: 2.2rem; }
-        p { color: #E0E0E0; margin-bottom: 1.8rem; font-size: 1.1rem; }
+        h1 { color: #FFFFFF; margin-bottom: 0.5rem; font-size: 1.8rem; }
+        p { color: #E0E0E0; margin-bottom: 1.5rem; font-size: 1rem; }
 
         /* WhatsApp Button */
         .wa-button {
             display: inline-block;
             background-color: #25D366; /* WhatsApp Green */
             color: white;
-            padding: 12px 25px;
+            padding: 12px 20px;
             text-decoration: none;
             border-radius: 50px;
             font-weight: bold;
-            font-size: 1rem;
+            font-size: 0.95rem;
             transition: transform 0.2s, background 0.3s;
             border: none;
+            box-shadow: 0 4px 12px rgba(37, 211, 102, 0.4);
         }
 
         .wa-button:hover {
@@ -83,11 +92,13 @@
             background-color: #128C7E;
         }
 
-        /* Responsive adjustments */
-        @media (max-width: 600px) {
-            h1 { font-size: 1.6rem; }
-            .content { padding: 1.5rem; }
-            .profile-container { width: 90px; height: 90px; }
+        /* Larger screen adjustments */
+        @media (min-width: 768px) {
+            .content { padding: 2.5rem; max-width: 450px; }
+            h1 { font-size: 2.2rem; }
+            p { font-size: 1.1rem; }
+            .profile-container { width: 110px; height: 110px; }
+            .wa-button { font-size: 1rem; padding: 14px 25px; }
         }
     </style>
 </head>
@@ -108,7 +119,6 @@
     <div class="content">
         <!-- Profile Picture Section -->
         <div class="profile-container">
-            <!-- Replace the src link below with your own image file name or URL -->
             <img src="logo.jpeg" alt="Al Wustho Technologies Profile">
         </div>
 
