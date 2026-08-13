@@ -5,9 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Al Wustho Technologies</title>
     <style>
-        /* Base Reset & Styling */
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
-        body { height: 100vh; overflow: hidden; display: flex; align-items: center; justify-content: center; color: white; }
+        body { height: 100vh; overflow: hidden; display: flex; align-items: center; justify-content: center; color: white; background-color: #001f3f; }
 
         /* Video Background Wrapper */
         .video-background {
@@ -22,39 +21,59 @@
 
         .video-background iframe {
             width: 100vw;
-            height: 56.25vw; /* 16:9 Aspect Ratio */
+            height: 56.25vw;
             min-height: 100vh;
             min-width: 177.77vh;
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            pointer-events: none; /* Prevents clicking the video */
+            pointer-events: none;
         }
 
-        /* Overlay Content */
+        /* Overlay Content Box */
         .content {
-            background: rgba(0, 50, 100, 0.7); /* Deep Blue with opacity */
-            padding: 3rem;
+            background: rgba(0, 31, 63, 0.88); /* Deep Blue with opacity */
+            padding: 2.5rem;
             border-radius: 20px;
             text-align: center;
             border: 2px solid #FFA500; /* Orange Border */
-            max-width: 80%;
+            max-width: 90%;
+            width: 400px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
-        h1 { color: #FFFFFF; margin-bottom: 1rem; font-size: 2.5rem; }
-        p { color: #E0E0E0; margin-bottom: 2rem; font-size: 1.2rem; }
+        /* Profile Picture Placeholder Styling */
+        .profile-container {
+            width: 110px;
+            height: 110px;
+            margin: 0 auto 1.2rem auto;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 3px solid #25D366; /* Green accent border for the profile */
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+            background-color: #ffffff; /* White background fallback */
+        }
+
+        .profile-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        h1 { color: #FFFFFF; margin-bottom: 0.5rem; font-size: 2.2rem; }
+        p { color: #E0E0E0; margin-bottom: 1.8rem; font-size: 1.1rem; }
 
         /* WhatsApp Button */
         .wa-button {
             display: inline-block;
             background-color: #25D366; /* WhatsApp Green */
             color: white;
-            padding: 15px 30px;
+            padding: 12px 25px;
             text-decoration: none;
             border-radius: 50px;
             font-weight: bold;
-            font-size: 1.1rem;
+            font-size: 1rem;
             transition: transform 0.2s, background 0.3s;
             border: none;
         }
@@ -66,8 +85,9 @@
 
         /* Responsive adjustments */
         @media (max-width: 600px) {
-            h1 { font-size: 1.8rem; }
+            h1 { font-size: 1.6rem; }
             .content { padding: 1.5rem; }
+            .profile-container { width: 90px; height: 90px; }
         }
     </style>
 </head>
@@ -76,7 +96,8 @@
     <!-- Background Video -->
     <div class="video-background">
         <iframe 
-            src="https://www.youtube.com/embed/PX4DT_A9UVU?autoplay=1&mute=1&loop=1&playlist=PX4DT_A9UVU&controls=0&showinfo=0&modestbranding=1" 
+            src="https://www.youtube-nocookie.com/embed/PX4DT_A9UVU?autoplay=1&mute=1&loop=1&playlist=PX4DT_A9UVU&controls=0&showinfo=0&modestbranding=1" 
+            referrerpolicy="strict-origin-when-cross-origin"
             frameborder="0" 
             allow="autoplay; encrypted-media" 
             allowfullscreen>
@@ -85,8 +106,15 @@
 
     <!-- Main Content -->
     <div class="content">
+        <!-- Profile Picture Section -->
+        <div class="profile-container">
+            <!-- Replace the src link below with your own image file name or URL -->
+            <img src="https://via.placeholder.com/150" alt="Al Wustho Technologies Profile">
+        </div>
+
         <h1>Al Wustho Technologies</h1>
         <p>Solusi Teknologi Digital Terpercaya</p>
+        
         <a href="https://wa.me/6285188139658" class="wa-button" target="_blank">
             Klik disini untuk konsultasi
         </a>
