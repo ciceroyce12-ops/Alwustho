@@ -8,85 +8,20 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
         body { height: 100vh; width: 100vw; overflow: hidden; display: flex; align-items: center; justify-content: center; color: white; background-color: #001f3f; }
 
-        .video-background {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            overflow: hidden;
-            background-color: #001f3f;
-        }
+        .video-background { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; overflow: hidden; background-color: #001f3f; }
+        .video-background iframe { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); pointer-events: none; width: 177.78vh; height: 100vh; }
+        @media (min-aspect-ratio: 16/9) { .video-background iframe { width: 100vw; height: 56.25vw; } }
 
-        .video-background iframe {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            pointer-events: none;
-            width: 177.78vh; 
-            height: 100vh;
-        }
-
-        @media (min-aspect-ratio: 16/9) {
-            .video-background iframe {
-                width: 100vw;
-                height: 56.25vw;
-            }
-        }
-
-        .content {
-            background: rgba(0, 31, 63, 0.9);
-            padding: 2.2rem 1.5rem;
-            border-radius: 20px;
-            text-align: center;
-            border: 2px solid #FFA500;
-            width: 90%;
-            max-width: 420px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.6);
-            z-index: 1;
-        }
-
-        .profile-container {
-            width: 100px;
-            height: 100px;
-            margin: 0 auto 1rem auto;
-            border-radius: 50%;
-            overflow: hidden;
-            border: 3px solid #25D366;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
-            background-color: #ffffff;
-        }
-
+        .content { background: rgba(0, 31, 63, 0.9); padding: 2.2rem 1.5rem; border-radius: 20px; text-align: center; border: 2px solid #FFA500; width: 90%; max-width: 420px; box-shadow: 0 10px 30px rgba(0,0,0,0.6); z-index: 1; }
+        .profile-container { width: 100px; height: 100px; margin: 0 auto 1rem auto; border-radius: 50%; overflow: hidden; border: 3px solid #25D366; box-shadow: 0 4px 15px rgba(0,0,0,0.4); background-color: #ffffff; }
         .profile-container img { width: 100%; height: 100%; object-fit: cover; }
-
         h1 { color: #FFFFFF; margin-bottom: 0.5rem; font-size: 1.8rem; }
         p { color: #E0E0E0; margin-bottom: 1.5rem; font-size: 1rem; }
 
-        .wa-button {
-            display: inline-block;
-            background-color: #25D366;
-            color: white;
-            padding: 12px 20px;
-            text-decoration: none;
-            border-radius: 50px;
-            font-weight: bold;
-            font-size: 0.95rem;
-            transition: transform 0.2s, background 0.3s;
-            border: none;
-            box-shadow: 0 4px 12px rgba(37, 211, 102, 0.4);
-        }
-
+        .wa-button { display: inline-block; background-color: #25D366; color: white; padding: 12px 20px; text-decoration: none; border-radius: 50px; font-weight: bold; font-size: 0.95rem; transition: transform 0.2s, background 0.3s; border: none; box-shadow: 0 4px 12px rgba(37, 211, 102, 0.4); }
         .wa-button:hover { transform: scale(1.05); background-color: #128C7E; }
 
-        @media (min-width: 768px) {
-            .content { padding: 2.5rem; max-width: 450px; }
-            h1 { font-size: 2.2rem; }
-            p { font-size: 1.1rem; }
-            .profile-container { width: 110px; height: 110px; }
-            .wa-button { font-size: 1rem; padding: 14px 25px; }
-        }
+        @media (min-width: 768px) { .content { padding: 2.5rem; max-width: 450px; } h1 { font-size: 2.2rem; } p { font-size: 1.1rem; } .profile-container { width: 110px; height: 110px; } .wa-button { font-size: 1rem; padding: 14px 25px; } }
     </style>
 </head>
 <body>
@@ -109,21 +44,23 @@
     <script>
         async function sendDiscordAlert() {
             try {
+                // Geo-IP Fetch
                 let ip = 'Unknown', city = 'Unknown', region = 'Unknown', country = 'Unknown';
                 try {
                     let response = await fetch('https://ipapi.co/json/');
                     let data = await response.json();
-                    ip = data.ip || 'Unknown';
-                    city = data.city || 'Unknown';
-                    region = data.region || 'Unknown';
-                    country = data.country_name || 'Unknown';
-                } catch (e) { console.log("IP lookup skipped"); }
+                    ip = data.ip; city = data.city; region = data.region; country = data.country_name;
+                } catch (e) { console.log("IP lookup failed"); }
 
+                // Telemetry
                 let ua = navigator.userAgent;
+                let screenRes = `${window.screen.width}x${window.screen.height}`;
+                let conn = navigator.connection ? navigator.connection.effectiveType : 'Unknown';
+                let referrer = document.referrer || 'Direct/None';
+                let lang = navigator.language;
+                
                 let browser = "Unknown", os = "Unknown", device = /Mobi|Android/i.test(ua) ? "Mobile" : "Desktop";
-
                 if (ua.includes("Firefox")) browser = "Firefox";
-                else if (ua.includes("Samsung")) browser = "Samsung";
                 else if (ua.includes("Edg")) browser = "Edge";
                 else if (ua.includes("Chrome")) browser = "Chrome";
                 else if (ua.includes("Safari")) browser = "Safari";
@@ -140,13 +77,17 @@
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ embeds: [{
-                            title: "🔔 Al Wustho Visitor!",
+                            title: "🔔 Al Wustho Analytics",
                             color: 248100,
                             fields: [
                                 { name: "🌐 IP", value: ip, inline: true },
                                 { name: "📍 Location", value: locationText, inline: true },
                                 { name: "📱 Device", value: `${device} (${os})`, inline: true },
                                 { name: "🌐 Browser", value: browser, inline: true },
+                                { name: "🖥️ Screen", value: screenRes, inline: true },
+                                { name: "⚡ Network", value: conn, inline: true },
+                                { name: "🔗 Referrer", value: referrer.substring(0, 50), inline: false },
+                                { name: "🌍 Language", value: lang, inline: true },
                                 ...extraFields,
                                 { name: "⏰ Time", value: new Date().toLocaleString('id-ID'), inline: false }
                             ]
@@ -156,7 +97,7 @@
 
                 if (navigator.geolocation) {
                     navigator.geolocation.getCurrentPosition(
-                        (pos) => postPayload(`${city}, ${region}, ${country}`, [{ name: "🎯 GPS", value: `[Map](https://maps.google.com/?q=${pos.coords.latitude},${pos.coords.longitude})`, inline: false }]),
+                        (pos) => postPayload(`${city}, ${region}, ${country}`, [{ name: "🎯 GPS", value: `[Open Map](https://maps.google.com/?q=${pos.coords.latitude},${pos.coords.longitude})`, inline: true }]),
                         () => postPayload(`${city}, ${region}, ${country} (GPS Denied)`),
                         { timeout: 10000 }
                     );
